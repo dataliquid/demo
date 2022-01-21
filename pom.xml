@@ -100,7 +100,7 @@
 				<version>1.17.1-SNAPSHOT</version>
 				<configuration>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
-					<hotfixVersionDigitToIncrement>1</hotfixVersionDigitToIncrement>
+					<hotfixVersionDigitToIncrement>2</hotfixVersionDigitToIncrement>
 					<installProject>false</installProject>
 					<verbose>true</verbose>
 					<useSnapshotInRelease>true</useSnapshotInRelease>
