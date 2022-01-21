@@ -102,6 +102,7 @@
 					<installProject>false</installProject>
 					<verbose>false</verbose>
 					<projectVersionPolicyId>OddEvenVersionPolicy</projectVersionPolicyId>
+					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
