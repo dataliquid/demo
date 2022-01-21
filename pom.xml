@@ -94,6 +94,14 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
+			<!--
+			   mvn gitflow:release-start
+			   mvn gitflow:release-finish -DpushRemote=false
+			   
+			   mvn gitflow:hotfix-start
+			   mvn gitflow:hotfix-finish -DpushRemote=false
+			-->
 			<plugin>
 				<groupId>com.amashchenko.maven.plugin</groupId>
 				<artifactId>gitflow-maven-plugin</artifactId>
