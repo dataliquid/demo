@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dataliquid.maven</groupId>
 	<artifactId>api-portal-maven-plugin</artifactId>
-	<version>1.4.4</version>
+	<version>1.5.0</version>
 	<packaging>pom</packaging>
 	<name>dataliquid :: API Portal Maven Plugin</name>
 	<description>Maven Plugin to use the API Portal functionality.</description>
@@ -99,10 +99,12 @@
 				<artifactId>gitflow-maven-plugin</artifactId>
 				<version>1.17.1-SNAPSHOT</version>
 				<configuration>
+					<versionDigitToIncrement>1</versionDigitToIncrement>
+					<hotfixVersionDigitToIncrement>2</hotfixVersionDigitToIncrement>
 					<installProject>false</installProject>
 					<verbose>true</verbose>
 					<useSnapshotInRelease>true</useSnapshotInRelease>
-					<versionDigitToIncrement>1</versionDigitToIncrement>
+					<useSnapshotInHotfix>true</useSnapshotInHotfix>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
