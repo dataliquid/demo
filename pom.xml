@@ -100,8 +100,7 @@
 				<version>1.17.1-SNAPSHOT</version>
 				<configuration>
 					<installProject>false</installProject>
-					<verbose>false</verbose>
-					<projectVersionPolicyId>OddEvenVersionPolicy</projectVersionPolicyId>
+					<verbose>true</verbose>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
@@ -114,13 +113,6 @@
 						<origin>origin</origin>
 					</gitFlowConfig>
 				</configuration>
-				 <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.release</groupId>
-                        <artifactId>maven-release-oddeven-policy</artifactId>
-                        <version>2.5.3</version>
-                    </dependency>
-                </dependencies>
 			</plugin>
 		</plugins>
 	</build>
