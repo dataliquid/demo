@@ -101,6 +101,7 @@
 				<configuration>
 					<installProject>false</installProject>
 					<verbose>true</verbose>
+					<useSnapshotInRelease>true</useSnapshotInRelease>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
