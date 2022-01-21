@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dataliquid.maven</groupId>
 	<artifactId>api-portal-maven-plugin</artifactId>
-	<version>1.6.1</version>
+	<version>1.7.0</version>
 	<packaging>pom</packaging>
 	<name>dataliquid :: API Portal Maven Plugin</name>
 	<description>Maven Plugin to use the API Portal functionality.</description>
@@ -94,10 +94,18 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
+			<!--
+			   mvn gitflow:release-start
+			   mvn gitflow:release-finish -DpushRemote=false
+			   
+			   mvn gitflow:hotfix-start
+			   mvn gitflow:hotfix-finish -DpushRemote=false
+			-->
 			<plugin>
 				<groupId>com.amashchenko.maven.plugin</groupId>
 				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.17.1-SNAPSHOT</version>
+				<version>1.17.0</version>
 				<configuration>
 					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<hotfixVersionDigitToIncrement>2</hotfixVersionDigitToIncrement>
