@@ -99,10 +99,11 @@
 				<artifactId>gitflow-maven-plugin</artifactId>
 				<version>1.17.1-SNAPSHOT</version>
 				<configuration>
+					<versionDigitToIncrement>1</versionDigitToIncrement>
 					<installProject>false</installProject>
 					<verbose>true</verbose>
 					<useSnapshotInRelease>true</useSnapshotInRelease>
-					<versionDigitToIncrement>1</versionDigitToIncrement>
+					<useSnapshotInHotfix>true</useSnapshotInHotfix>
 					<gitFlowConfig>
 						<productionBranch>master</productionBranch>
 						<developmentBranch>develop</developmentBranch>
