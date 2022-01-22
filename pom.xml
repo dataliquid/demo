@@ -111,6 +111,7 @@
 					<hotfixVersionDigitToIncrement>2</hotfixVersionDigitToIncrement>
 					<installProject>false</installProject>
 					<verbose>true</verbose>
+					<pushRemote>true</pushRemote>
 					<useSnapshotInRelease>true</useSnapshotInRelease>
 					<useSnapshotInHotfix>true</useSnapshotInHotfix>
 					<gitFlowConfig>
