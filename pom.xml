@@ -126,6 +126,8 @@
 					</gitFlowConfig>
 					<commitMessages>
 						<releaseVersionUpdateMessage>Update for release version</releaseVersionUpdateMessage>
+						<hotfixFinishMessage>Update for hotfix release version</hotfixFinishMessage>
+						<releaseFinishMessage>Update for release version</releaseFinishMessage>
 					</commitMessages>
 				</configuration>
 			</plugin>
