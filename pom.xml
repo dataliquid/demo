@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dataliquid.maven</groupId>
 	<artifactId>api-portal-maven-plugin</artifactId>
-	<version>1.13.0</version>
+	<version>1.14.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>dataliquid :: API Portal Maven Plugin</name>
 	<description>Maven Plugin to use the API Portal functionality.</description>
