@@ -124,6 +124,9 @@
 						<versionTagPrefix></versionTagPrefix>
 						<origin>origin</origin>
 					</gitFlowConfig>
+					<commitMessages>
+						<releaseVersionUpdateMessage>Update for release version</releaseVersionUpdateMessage>
+					</commitMessages>
 				</configuration>
 			</plugin>
 		</plugins>
