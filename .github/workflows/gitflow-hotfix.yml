@@ -44,9 +44,9 @@ jobs:
       if: inputs.action == 'hotfix-start'
       run: |
         if [ -z "${{ inputs.version }}" ]; then
-          mvn gitflow:hotfix-start -B -ntp
+          mvn gitflow:hotfix-start -B -ntp -DargLine="-B -ntp"
         else
-          mvn gitflow:hotfix-start -B -ntp -DhotfixVersion=${{ inputs.version }}
+          mvn gitflow:hotfix-start -B -ntp -DhotfixVersion=${{ inputs.version }} -DargLine="-B -ntp"
         fi
     
     - name: Hotfix Finish
@@ -72,7 +72,7 @@ jobs:
             exit 1
           fi
           
-          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
+          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }} -DargLine="-B -ntp"
         else
           echo "Error: 'version' parameter is required for hotfix-finish."
           echo "Please provide the version number (e.g., 1.17.1)"

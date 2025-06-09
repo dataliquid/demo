@@ -48,9 +48,9 @@ jobs:
       if: inputs.action == 'release-start'
       run: |
         if [ -z "${{ inputs.version }}" ]; then
-          mvn gitflow:release-start -B -ntp
+          mvn gitflow:release-start -B -ntp -DargLine="-B -ntp"
         else
-          mvn gitflow:release-start -B -ntp -DreleaseVersion=${{ inputs.version }}
+          mvn gitflow:release-start -B -ntp -DreleaseVersion=${{ inputs.version }} -DargLine="-B -ntp"
         fi
     
     - name: Release Finish
@@ -75,7 +75,7 @@ jobs:
             exit 1
           fi
           
-          mvn gitflow:release-finish -B -ntp -DpushRemote=true -DreleaseBranch=${{ inputs.branch }}
+          mvn gitflow:release-finish -B -ntp -DpushRemote=true -DreleaseBranch=${{ inputs.branch }} -DargLine="-B -ntp"
         elif [ -n "${{ inputs.version }}" ]; then
           RELEASE_BRANCH="release/${{ inputs.version }}"
           echo "Using provided version: ${{ inputs.version }}"
@@ -95,7 +95,7 @@ jobs:
             exit 1
           fi
           
-          mvn gitflow:release-finish -B -ntp -DpushRemote=true -DreleaseVersion=${{ inputs.version }}
+          mvn gitflow:release-finish -B -ntp -DpushRemote=true -DreleaseVersion=${{ inputs.version }} -DargLine="-B -ntp"
         else
           echo "Error: Either 'branch' or 'version' must be specified for release-finish."
           echo "Please provide either:"
