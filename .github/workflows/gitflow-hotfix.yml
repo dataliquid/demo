@@ -11,11 +11,7 @@ on:
           - hotfix-start
           - hotfix-finish
       version:
-        description: 'Hotfix version (for hotfix-start and hotfix-finish, e.g., 1.17.1)'
-        required: false
-        type: string
-      branch:
-        description: 'Hotfix branch name (for hotfix-finish, e.g., hotfix/1.17.1)'
+        description: 'Hotfix version (REQUIRED for both hotfix-start and hotfix-finish, e.g., 1.17.1)'
         required: false
         type: string
 
@@ -53,11 +49,21 @@ jobs:
     - name: Hotfix Finish
       if: inputs.action == 'hotfix-finish'
       run: |
-        if [ -n "${{ inputs.branch }}" ]; then
-          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixBranch=${{ inputs.branch }}
-        elif [ -n "${{ inputs.version }}" ]; then
+        # For hotfix-finish, we need the version
+        if [ -n "${{ inputs.version }}" ]; then
+          echo "Using provided version: ${{ inputs.version }}"
           mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
         else
-          echo "Error: Either branch or version must be specified for hotfix-finish"
-          exit 1
+          # Try to detect current branch and extract version
+          CURRENT_BRANCH=$(git branch --show-current)
+          if [[ "$CURRENT_BRANCH" == hotfix/* ]]; then
+            VERSION=$(echo "$CURRENT_BRANCH" | sed 's/^hotfix\///')
+            echo "Auto-detected hotfix version from current branch: $VERSION"
+            mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=$VERSION
+          else
+            echo "Error: 'version' parameter is required for hotfix-finish."
+            echo "Current branch: $CURRENT_BRANCH"
+            echo "Please provide the version number (e.g., 1.17.1)"
+            exit 1
+          fi
         fi
