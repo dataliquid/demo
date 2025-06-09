@@ -11,7 +11,11 @@ on:
           - release-start
           - release-finish
       version:
-        description: 'Release version (only for release-start, e.g., 1.18.0)'
+        description: 'Release version (for release-start and release-finish, e.g., 1.18.0)'
+        required: false
+        type: string
+      branch:
+        description: 'Release branch name (for release-finish, e.g., release/1.18.0)'
         required: false
         type: string
 
@@ -49,4 +53,11 @@ jobs:
     - name: Release Finish
       if: inputs.action == 'release-finish'
       run: |
-        mvn gitflow:release-finish -B -DpushRemote=true
+        if [ -n "${{ inputs.branch }}" ]; then
+          mvn gitflow:release-finish -B -DpushRemote=true -DreleaseBranch=${{ inputs.branch }}
+        elif [ -n "${{ inputs.version }}" ]; then
+          mvn gitflow:release-finish -B -DpushRemote=true -DreleaseVersion=${{ inputs.version }}
+        else
+          echo "Error: Either branch or version must be specified for release-finish"
+          exit 1
+        fi

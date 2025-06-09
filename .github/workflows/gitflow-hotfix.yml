@@ -11,7 +11,11 @@ on:
           - hotfix-start
           - hotfix-finish
       version:
-        description: 'Hotfix version (only for hotfix-start, e.g., 1.17.1)'
+        description: 'Hotfix version (for hotfix-start and hotfix-finish, e.g., 1.17.1)'
+        required: false
+        type: string
+      branch:
+        description: 'Hotfix branch name (for hotfix-finish, e.g., hotfix/1.17.1)'
         required: false
         type: string
 
@@ -49,4 +53,11 @@ jobs:
     - name: Hotfix Finish
       if: inputs.action == 'hotfix-finish'
       run: |
-        mvn gitflow:hotfix-finish -B -DpushRemote=true
+        if [ -n "${{ inputs.branch }}" ]; then
+          mvn gitflow:hotfix-finish -B -DpushRemote=true -DhotfixBranch=${{ inputs.branch }}
+        elif [ -n "${{ inputs.version }}" ]; then
+          mvn gitflow:hotfix-finish -B -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
+        else
+          echo "Error: Either branch or version must be specified for hotfix-finish"
+          exit 1
+        fi
