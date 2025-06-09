@@ -11,8 +11,8 @@ on:
           - hotfix-start
           - hotfix-finish
       version:
-        description: 'Hotfix version (REQUIRED for both hotfix-start and hotfix-finish, e.g., 1.17.1)'
-        required: false
+        description: 'Hotfix version (e.g., 1.17.1)'
+        required: true
         type: string
 
 jobs:
@@ -43,38 +43,28 @@ jobs:
     - name: Hotfix Start
       if: inputs.action == 'hotfix-start'
       run: |
-        if [ -z "${{ inputs.version }}" ]; then
-          mvn gitflow:hotfix-start -B -ntp
-        else
-          mvn gitflow:hotfix-start -B -ntp -DhotfixVersion=${{ inputs.version }}
-        fi
+        echo "Starting hotfix version: ${{ inputs.version }}"
+        mvn gitflow:hotfix-start -B -ntp -DhotfixVersion=${{ inputs.version }} -DargLine="-B -ntp"
     
     - name: Hotfix Finish
       if: inputs.action == 'hotfix-finish'
       run: |
-        # For hotfix-finish, we need the version
-        if [ -n "${{ inputs.version }}" ]; then
-          HOTFIX_BRANCH="hotfix/${{ inputs.version }}"
-          echo "Using provided version: ${{ inputs.version }}"
-          echo "Checking for hotfix branch: $HOTFIX_BRANCH"
-          
-          # Check if the hotfix branch exists
-          if git show-ref --verify --quiet "refs/remotes/origin/$HOTFIX_BRANCH"; then
-            echo "Found remote hotfix branch: $HOTFIX_BRANCH"
-            git checkout "$HOTFIX_BRANCH"
-          elif git show-ref --verify --quiet "refs/heads/$HOTFIX_BRANCH"; then
-            echo "Found local hotfix branch: $HOTFIX_BRANCH"
-            git checkout "$HOTFIX_BRANCH"
-          else
-            echo "Error: Hotfix branch '$HOTFIX_BRANCH' not found!"
-            echo "Available remote branches:"
-            git branch -r | grep hotfix/ || echo "No hotfix branches found"
-            exit 1
-          fi
-          
-          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
+        HOTFIX_BRANCH="hotfix/${{ inputs.version }}"
+        echo "Finishing hotfix version: ${{ inputs.version }}"
+        echo "Checking for hotfix branch: $HOTFIX_BRANCH"
+        
+        # Check if the hotfix branch exists
+        if git show-ref --verify --quiet "refs/remotes/origin/$HOTFIX_BRANCH"; then
+          echo "Found remote hotfix branch: $HOTFIX_BRANCH"
+          git checkout "$HOTFIX_BRANCH"
+        elif git show-ref --verify --quiet "refs/heads/$HOTFIX_BRANCH"; then
+          echo "Found local hotfix branch: $HOTFIX_BRANCH"
+          git checkout "$HOTFIX_BRANCH"
         else
-          echo "Error: 'version' parameter is required for hotfix-finish."
-          echo "Please provide the version number (e.g., 1.17.1)"
+          echo "Error: Hotfix branch '$HOTFIX_BRANCH' not found!"
+          echo "Available remote branches:"
+          git branch -r | grep hotfix/ || echo "No hotfix branches found"
           exit 1
         fi
+        
+        mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }} -DargLine="-B -ntp"
