@@ -45,18 +45,18 @@ jobs:
       if: inputs.action == 'hotfix-start'
       run: |
         if [ -z "${{ inputs.version }}" ]; then
-          mvn gitflow:hotfix-start -B
+          mvn gitflow:hotfix-start -B -ntp
         else
-          mvn gitflow:hotfix-start -B -DhotfixVersion=${{ inputs.version }}
+          mvn gitflow:hotfix-start -B -ntp -DhotfixVersion=${{ inputs.version }}
         fi
     
     - name: Hotfix Finish
       if: inputs.action == 'hotfix-finish'
       run: |
         if [ -n "${{ inputs.branch }}" ]; then
-          mvn gitflow:hotfix-finish -B -DpushRemote=true -DhotfixBranch=${{ inputs.branch }}
+          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixBranch=${{ inputs.branch }}
         elif [ -n "${{ inputs.version }}" ]; then
-          mvn gitflow:hotfix-finish -B -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
+          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
         else
           echo "Error: Either branch or version must be specified for hotfix-finish"
           exit 1
