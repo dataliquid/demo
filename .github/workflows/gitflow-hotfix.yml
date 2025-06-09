@@ -25,6 +25,9 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
     
+    - name: Fetch all branches
+      run: git fetch --all
+    
     - name: Set up JDK 8
       uses: actions/setup-java@v4
       with:
@@ -51,19 +54,27 @@ jobs:
       run: |
         # For hotfix-finish, we need the version
         if [ -n "${{ inputs.version }}" ]; then
+          HOTFIX_BRANCH="hotfix/${{ inputs.version }}"
           echo "Using provided version: ${{ inputs.version }}"
-          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
-        else
-          # Try to detect current branch and extract version
-          CURRENT_BRANCH=$(git branch --show-current)
-          if [[ "$CURRENT_BRANCH" == hotfix/* ]]; then
-            VERSION=$(echo "$CURRENT_BRANCH" | sed 's/^hotfix\///')
-            echo "Auto-detected hotfix version from current branch: $VERSION"
-            mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=$VERSION
+          echo "Checking for hotfix branch: $HOTFIX_BRANCH"
+          
+          # Check if the hotfix branch exists
+          if git show-ref --verify --quiet "refs/remotes/origin/$HOTFIX_BRANCH"; then
+            echo "Found remote hotfix branch: $HOTFIX_BRANCH"
+            git checkout "$HOTFIX_BRANCH"
+          elif git show-ref --verify --quiet "refs/heads/$HOTFIX_BRANCH"; then
+            echo "Found local hotfix branch: $HOTFIX_BRANCH"
+            git checkout "$HOTFIX_BRANCH"
           else
-            echo "Error: 'version' parameter is required for hotfix-finish."
-            echo "Current branch: $CURRENT_BRANCH"
-            echo "Please provide the version number (e.g., 1.17.1)"
+            echo "Error: Hotfix branch '$HOTFIX_BRANCH' not found!"
+            echo "Available remote branches:"
+            git branch -r | grep hotfix/ || echo "No hotfix branches found"
             exit 1
           fi
+          
+          mvn gitflow:hotfix-finish -B -ntp -DpushRemote=true -DhotfixVersion=${{ inputs.version }}
+        else
+          echo "Error: 'version' parameter is required for hotfix-finish."
+          echo "Please provide the version number (e.g., 1.17.1)"
+          exit 1
         fi
