@@ -1,0 +1,105 @@
+name: Gitflow Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Gitflow action to perform'
+        required: true
+        type: choice
+        options:
+          - release-start
+          - release-finish
+      version:
+        description: 'Release version (for release-start and release-finish, e.g., 1.18.0)'
+        required: false
+        type: string
+      branch:
+        description: 'Release branch name (REQUIRED for release-finish, e.g., release/1.18.0)'
+        required: false
+        type: string
+
+jobs:
+  gitflow-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Fetch all branches
+      run: git fetch --all
+    
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Configure Git
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+    
+    - name: Release Start
+      if: inputs.action == 'release-start'
+      run: |
+        if [ -z "${{ inputs.version }}" ]; then
+          mvn gitflow:release-start -B -ntp
+        else
+          mvn gitflow:release-start -B -ntp -DreleaseVersion=${{ inputs.version }}
+        fi
+    
+    - name: Release Finish
+      if: inputs.action == 'release-finish'
+      run: |
+        # For release-finish, we need to determine the branch
+        if [ -n "${{ inputs.branch }}" ]; then
+          RELEASE_BRANCH="${{ inputs.branch }}"
+          echo "Using provided branch: $RELEASE_BRANCH"
+          
+          # Check if the release branch exists and checkout
+          if git show-ref --verify --quiet "refs/remotes/origin/$RELEASE_BRANCH"; then
+            echo "Found remote release branch: $RELEASE_BRANCH"
+            git checkout "$RELEASE_BRANCH"
+          elif git show-ref --verify --quiet "refs/heads/$RELEASE_BRANCH"; then
+            echo "Found local release branch: $RELEASE_BRANCH"
+            git checkout "$RELEASE_BRANCH"
+          else
+            echo "Error: Release branch '$RELEASE_BRANCH' not found!"
+            echo "Available remote branches:"
+            git branch -r | grep release/ || echo "No release branches found"
+            exit 1
+          fi
+          
+          mvn gitflow:release-finish -B -ntp -DpushRemote=true -DreleaseBranch=${{ inputs.branch }}
+        elif [ -n "${{ inputs.version }}" ]; then
+          RELEASE_BRANCH="release/${{ inputs.version }}"
+          echo "Using provided version: ${{ inputs.version }}"
+          echo "Checking for release branch: $RELEASE_BRANCH"
+          
+          # Check if the release branch exists and checkout
+          if git show-ref --verify --quiet "refs/remotes/origin/$RELEASE_BRANCH"; then
+            echo "Found remote release branch: $RELEASE_BRANCH"
+            git checkout "$RELEASE_BRANCH"
+          elif git show-ref --verify --quiet "refs/heads/$RELEASE_BRANCH"; then
+            echo "Found local release branch: $RELEASE_BRANCH"
+            git checkout "$RELEASE_BRANCH"
+          else
+            echo "Error: Release branch '$RELEASE_BRANCH' not found!"
+            echo "Available remote branches:"
+            git branch -r | grep release/ || echo "No release branches found"
+            exit 1
+          fi
+          
+          mvn gitflow:release-finish -B -ntp -DpushRemote=true -DreleaseVersion=${{ inputs.version }}
+        else
+          echo "Error: Either 'branch' or 'version' must be specified for release-finish."
+          echo "Please provide either:"
+          echo "  - branch: The full release branch name (e.g., release/1.18.0)"
+          echo "  - version: The version number (e.g., 1.18.0)"
+          exit 1
+        fi
