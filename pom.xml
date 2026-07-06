@@ -102,18 +102,18 @@
 			   mvn gitflow:hotfix-start
 			   mvn gitflow:hotfix-finish -DpushRemote=false
 
-			   ===== Vollstaendige Befehle (explizit, mit allen Parametern) =====
+			   ===== Full commands (explicit, with all parameters) =====
 
-			   # Release starten
+			   # Start release
 			   mvn -B com.amashchenko.maven.plugin:gitflow-maven-plugin:1.20.0:release-start -DversionDigitToIncrement=1 -DhotfixVersionDigitToIncrement=2 -DinstallProject=false -Dverbose=true -DpushRemote=true -DuseSnapshotInRelease=true -DuseSnapshotInHotfix=true -DgitFlowConfig.productionBranch=master -DgitFlowConfig.developmentBranch=develop -DgitFlowConfig.featureBranchPrefix=feature/ -DgitFlowConfig.releaseBranchPrefix=release/ -DgitFlowConfig.hotfixBranchPrefix=hotfix/ -DgitFlowConfig.supportBranchPrefix=support/ -DgitFlowConfig.versionTagPrefix= -DgitFlowConfig.origin=origin "-DcommitMessages.releaseFinishMessage=Update version to @{version}" "-DcommitMessages.hotfixFinishMessage=Update version to @{version}"
 
-			   # Release abschliessen
+			   # Finish release
 			   mvn -B com.amashchenko.maven.plugin:gitflow-maven-plugin:1.20.0:release-finish -DversionDigitToIncrement=1 -DhotfixVersionDigitToIncrement=2 -DinstallProject=false -Dverbose=true -DpushRemote=true -DuseSnapshotInRelease=true -DuseSnapshotInHotfix=true -DgitFlowConfig.productionBranch=master -DgitFlowConfig.developmentBranch=develop -DgitFlowConfig.featureBranchPrefix=feature/ -DgitFlowConfig.releaseBranchPrefix=release/ -DgitFlowConfig.hotfixBranchPrefix=hotfix/ -DgitFlowConfig.supportBranchPrefix=support/ -DgitFlowConfig.versionTagPrefix= -DgitFlowConfig.origin=origin "-DcommitMessages.releaseFinishMessage=Update version to @{version}" "-DcommitMessages.hotfixFinishMessage=Update version to @{version}"
 
-			   # Hotfix starten
+			   # Start hotfix
 			   mvn -B com.amashchenko.maven.plugin:gitflow-maven-plugin:1.20.0:hotfix-start -DversionDigitToIncrement=1 -DhotfixVersionDigitToIncrement=2 -DinstallProject=false -Dverbose=true -DpushRemote=true -DuseSnapshotInRelease=true -DuseSnapshotInHotfix=true -DgitFlowConfig.productionBranch=master -DgitFlowConfig.developmentBranch=develop -DgitFlowConfig.featureBranchPrefix=feature/ -DgitFlowConfig.releaseBranchPrefix=release/ -DgitFlowConfig.hotfixBranchPrefix=hotfix/ -DgitFlowConfig.supportBranchPrefix=support/ -DgitFlowConfig.versionTagPrefix= -DgitFlowConfig.origin=origin "-DcommitMessages.releaseFinishMessage=Update version to @{version}" "-DcommitMessages.hotfixFinishMessage=Update version to @{version}"
 
-			   # Hotfix abschliessen
+			   # Finish hotfix
 			   mvn -B com.amashchenko.maven.plugin:gitflow-maven-plugin:1.20.0:hotfix-finish -DversionDigitToIncrement=1 -DhotfixVersionDigitToIncrement=2 -DinstallProject=false -Dverbose=true -DpushRemote=true -DuseSnapshotInRelease=true -DuseSnapshotInHotfix=true -DgitFlowConfig.productionBranch=master -DgitFlowConfig.developmentBranch=develop -DgitFlowConfig.featureBranchPrefix=feature/ -DgitFlowConfig.releaseBranchPrefix=release/ -DgitFlowConfig.hotfixBranchPrefix=hotfix/ -DgitFlowConfig.supportBranchPrefix=support/ -DgitFlowConfig.versionTagPrefix= -DgitFlowConfig.origin=origin "-DcommitMessages.releaseFinishMessage=Update version to @{version}" "-DcommitMessages.hotfixFinishMessage=Update version to @{version}"
 			-->
 			<plugin>
